@@ -9,8 +9,11 @@ pluginManagement {
         }
         mavenCentral()
         gradlePluginPortal()
+
     }
+
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -18,6 +21,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
 
 rootProject.name = "Github Repos"
 include(":app")

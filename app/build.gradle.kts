@@ -1,9 +1,13 @@
 plugins {
+    kotlin("kapt")
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
+    id("com.google.devtools.ksp")
     alias(libs.plugins.hilt)
+
     // Add this line to apply kapt in Kotlin DSL
-    id("org.jetbrains.kotlin.kapt")
+    id("kotlinx-serialization")
 }
 
 android {
@@ -16,16 +20,20 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+        multiDexEnabled = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildConfigField("String", "GITHUB_URL", "\"https://api.github.com/search/\"")
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -41,6 +49,9 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
+        dataBinding = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -54,16 +65,27 @@ android {
 
 dependencies {
 
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    debugImplementation(libs.androidx.ui.tooling)
+    implementation(libs.androidx.hilt.navigation.compose)
+
     implementation(libs.androidx.core.ktx)
 
     implementation(libs.viewmodel)
     implementation(libs.livedata)
-    implementation(libs.lifecycle.runtime)
     implementation(libs.savedstate)
 
     // Hilt dependencies
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.recyclerview)
+    ksp(libs.hilt.compiler)
 
     // Kotlin Coroutines dependencies
     implementation(libs.kotlin.coroutines.core)
@@ -72,6 +94,8 @@ dependencies {
     // Retrofit dependencies
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson) // Use Gson converter
+    implementation(libs.retrofit.kotlin.serialization)
+    implementation(libs.kotlinx.serialization.json)
 
     // OkHttp dependencies
     implementation(libs.okhttp)
@@ -79,7 +103,15 @@ dependencies {
 
     // Glide dependencies
     implementation(libs.glide)
-    kapt(libs.glide.compiler) // Use kapt for annotation processing
+    ksp(libs.glide.compiler) // Use kapt for annotation processing
+
+    // Multidex
+    implementation(libs.androidx.multidex)
+
+    implementation(libs.androidx.fragment)
+    implementation(libs.androidx.fragment.ktx)
+
+    implementation(libs.androidx.datastore.core.okio.jvm)
 
     testImplementation(libs.junit)
 
