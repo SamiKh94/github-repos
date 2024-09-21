@@ -4,10 +4,9 @@ import androidx.core.os.trace
 import com.githubrepos.app.BuildConfig
 import com.githubrepos.app.domain.models.CreationPeriod
 import com.githubrepos.app.domain.models.RepositoriesResponse
-import com.githubrepos.app.utils.Dispatcher
-import com.githubrepos.app.utils.Dispatchers
+import com.githubrepos.app.utils.QueryBuilder
 import com.google.gson.Gson
-import kotlinx.coroutines.CoroutineDispatcher
+import dagger.Lazy
 import okhttp3.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -17,12 +16,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Retrofit API declaration for NIA Network API
+ * Retrofit API declaration for Network API
  */
 private interface RetrofitNetworkApi {
-    @GET(value = "repositories?q=created&sort=stars&order=desc")
+    @GET(value = "repositories?sort=starts&order=desc")
     suspend fun getRepositories(
-        @Query("date") date: CreationPeriod,
+        @Query("q") queries: String
     ): RepositoriesResponse
 
 }
@@ -34,9 +33,8 @@ private const val BASE_URL = BuildConfig.GITHUB_URL
  */
 @Singleton
 internal class RetrofitNetwork @Inject constructor(
-    @Dispatcher(Dispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
     gson: Gson,
-    okhttpCallFactory: dagger.Lazy<Call.Factory>,
+    okhttpCallFactory: Lazy<Call.Factory>,
 ) : NetworkDataSource {
 
     private val networkApi = trace("RetrofitNiaNetwork") {
@@ -50,6 +48,6 @@ internal class RetrofitNetwork @Inject constructor(
             .create(RetrofitNetworkApi::class.java)
     }
 
-    override suspend fun getRepositories(creationPeriod: CreationPeriod): RepositoriesResponse? =
-        networkApi.getRepositories(date = creationPeriod)
+    override suspend fun getRepositories(creationPeriod: CreationPeriod): RepositoriesResponse =
+        networkApi.getRepositories(queries = QueryBuilder(creationPeriod = creationPeriod).build())
 }

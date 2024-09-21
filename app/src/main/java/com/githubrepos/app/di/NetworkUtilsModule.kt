@@ -20,6 +20,7 @@ import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import java.lang.reflect.Modifier
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -35,32 +36,24 @@ class NetworkUtilsModule {
     @Provides
     @Singleton
     fun okHttpCallFactory(): Call.Factory = trace("OkHttpClient") {
-        OkHttpClient.Builder()
-            .addInterceptor(
-                HttpLoggingInterceptor()
-                    .apply {
-//                        if (BuildConfig.DEBUG) {
-                        setLevel(HttpLoggingInterceptor.Level.BODY)
-//                        }
-                    },
-            )
-            .build()
+        val httpLoggingInterceptor = HttpLoggingInterceptor()
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+
+        val timeOut = 60L
+
+        val okHttpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
+            .addInterceptor(httpLoggingInterceptor)
+            .readTimeout(timeOut, TimeUnit.SECONDS)
+            .writeTimeout(timeOut, TimeUnit.SECONDS)
+
+
+        return okHttpClientBuilder.build()
     }
 
     @Provides
     @Singleton
     fun provideNetworkGson(): Gson {
         val gson = GsonBuilder()
-            .excludeFieldsWithModifiers(Modifier.STATIC, Modifier.TRANSIENT, Modifier.VOLATILE)
-            .setExclusionStrategies(object : ExclusionStrategy {
-                override fun shouldSkipField(f: FieldAttributes): Boolean {
-                    return f.declaredType == Void.TYPE
-                }
-
-                override fun shouldSkipClass(clazz: Class<*>): Boolean {
-                    return clazz.name.equals(Void::class.java.name, ignoreCase = true)
-                }
-            })
             .create()
         return gson
     }
