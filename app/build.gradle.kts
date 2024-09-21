@@ -108,6 +108,12 @@ dependencies {
     // Multidex
     implementation(libs.androidx.multidex)
 
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.material)
+
+    implementation(libs.coil.kt)
+    implementation(libs.coil.kt.svg)
+
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.fragment.ktx)
 

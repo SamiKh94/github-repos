@@ -8,7 +8,6 @@ import com.githubrepos.app.utils.Dispatcher
 import com.githubrepos.app.utils.Dispatchers
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.serialization.Serializable
 import okhttp3.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -29,14 +28,6 @@ private interface RetrofitNetworkApi {
 }
 
 private const val BASE_URL = BuildConfig.GITHUB_URL
-
-/**
- * Wrapper for data provided from the [BASE_URL]
- */
-@Serializable
-data class NetworkResponse<T>(
-    val data: T?,
-)
 
 /**
  * [Retrofit] backed [NetworkDataSource]

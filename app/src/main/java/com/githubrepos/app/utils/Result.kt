@@ -29,7 +29,6 @@ sealed interface Result<out T> {
 }
 
 fun <T> Flow<T>.asResult(): Flow<Result<T>> = map<T, Result<T>> {
-    Log.d("asSResult-Success", "Success: $it")
     Result.Success(it)
 }
     .onStart {
@@ -39,18 +38,3 @@ fun <T> Flow<T>.asResult(): Flow<Result<T>> = map<T, Result<T>> {
         it.printStackTrace()
         emit(Result.Error)
     }
-
-sealed class ApiResult<out T>(val data: T?) {
-
-    data class Success<out R>(val _data: R?) : ApiResult<R>(
-        data = _data,
-    )
-
-    data class Error(val exception: String) : ApiResult<Nothing>(
-        data = null,
-    )
-
-    data class Loading<out R>(val _data: R?, val isLoading: Boolean) : ApiResult<R>(
-        data = _data,
-    )
-}

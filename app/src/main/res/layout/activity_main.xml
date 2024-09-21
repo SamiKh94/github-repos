@@ -8,7 +8,23 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/gray_f5"
         android:orientation="vertical">
+
+        <Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:elevation="10dp" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/my_fragment"
+            android:name="com.githubrepos.app.ui.repository.RepositoryFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:layout_weight="1" />
 
     </LinearLayout>
 </layout>

@@ -41,6 +41,7 @@ class GithubRemoteRepositoriesRepository @Inject constructor(
                         RepositoryItem(
                             id = repository.id,
                             name = repository.name,
+                            description = repository.description,
                             stars = repository.stargazersCount,
                             owner = repository.owner
                         )
