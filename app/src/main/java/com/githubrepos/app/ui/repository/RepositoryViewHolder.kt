@@ -8,16 +8,22 @@ import com.githubrepos.app.R
 import com.githubrepos.app.data.remote.RepositoryItem
 import com.githubrepos.app.databinding.ListItemRepositoryBinding
 
-class RepositoryViewHolder(private val binding: ListItemRepositoryBinding) :
+class RepositoryViewHolder(
+    private val binding: ListItemRepositoryBinding,
+    onRepositoryClicked: (RepositoryItem) -> Unit
+) :
     RecyclerView.ViewHolder(binding.root) {
+
+    private lateinit var repository: RepositoryItem
 
     init {
         binding.root.setOnClickListener {
-            Log.d("Click", "Click")
+            onRepositoryClicked.invoke(repository)
         }
     }
 
     fun bind(repository: RepositoryItem) {
+        this.repository = repository
         with(binding) {
             ownerAvatarUrl = repository.owner.avatarUrl
             repoName.text = repository.name
@@ -34,8 +40,14 @@ class RepositoryViewHolder(private val binding: ListItemRepositoryBinding) :
     }
 
     companion object {
-        fun create(parent: ViewGroup): RepositoryViewHolder {
-            return RepositoryViewHolder(ListItemRepositoryBinding.inflate(LayoutInflater.from(parent.context)))
+        fun create(
+            parent: ViewGroup,
+            onRepositoryClicked: (RepositoryItem) -> Unit
+        ): RepositoryViewHolder {
+            return RepositoryViewHolder(
+                ListItemRepositoryBinding.inflate(LayoutInflater.from(parent.context)),
+                onRepositoryClicked
+            )
         }
     }
 }

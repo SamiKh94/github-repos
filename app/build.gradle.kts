@@ -2,12 +2,14 @@ plugins {
     kotlin("kapt")
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+
     alias(libs.plugins.compose.compiler)
     id("com.google.devtools.ksp")
     alias(libs.plugins.hilt)
 
     // Add this line to apply kapt in Kotlin DSL
     id("kotlinx-serialization")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -117,6 +119,8 @@ dependencies {
 
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.fragment.ktx)
+
+    implementation(libs.chrome.custom.tabs)
 
     implementation(libs.androidx.datastore.core.okio.jvm)
 

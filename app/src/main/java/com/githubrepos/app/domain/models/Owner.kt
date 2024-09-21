@@ -1,10 +1,12 @@
 package com.githubrepos.app.domain.models
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
-@Serializable
+@Parcelize
 data class Owner(
     @SerializedName("avatar_url")
     val avatarUrl: String,
@@ -42,4 +44,4 @@ data class Owner(
     val type: String,
     @SerializedName("url")
     val url: String
-)
+): Parcelable

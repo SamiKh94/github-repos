@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubrepos.app.R
 import com.githubrepos.app.databinding.FragmentRepositoriesListBinding
 import com.githubrepos.app.domain.models.CreationPeriod
+import com.githubrepos.app.ui.repository.details.RepositoryDetailsActivity
 import com.githubrepos.app.utils.SpacesItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -24,27 +25,19 @@ class RepositoryFragment : Fragment() {
     private lateinit var binding: FragmentRepositoriesListBinding
     private val viewModel by viewModels<RepositoriesViewModel>()
 
-    //    private val repositoriesAdapter: RepositoriesListAdapter = RepositoriesListAdapter()
-    private val repositoriesAdapter: PagedRepositoriesAdapter = PagedRepositoriesAdapter()
+        private val repositoriesAdapter: PagedRepositoriesAdapter = PagedRepositoriesAdapter {
+        startActivity(RepositoryDetailsActivity.newIntent(requireContext(), it))
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentRepositoriesListBinding.inflate(inflater)
 
         with(binding.list) {
             layoutManager = LinearLayoutManager(context)
             adapter = repositoriesAdapter
-//            repositoriesAdapter.addLoadStateListener { loadState ->
-//                // Show loading spinner during initial load or refresh
-//                val isLoading = loadState.source.refresh is LoadState.Loading
-//                progressBar.isVisible = isLoading
-//
-//                // Handle error state
-//                val isError = loadState.source.refresh is LoadState.Error
-//                errorTextView.isVisible = isError
-//            }
 
             addItemDecoration(
                 SpacesItemDecoration()

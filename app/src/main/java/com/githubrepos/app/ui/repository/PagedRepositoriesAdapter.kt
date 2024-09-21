@@ -5,11 +5,11 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.githubrepos.app.data.remote.RepositoryItem
 
-class PagedRepositoriesAdapter :
+class PagedRepositoriesAdapter(private val onRepositoryClicked: (RepositoryItem) -> Unit) :
     PagingDataAdapter<RepositoryItem, RepositoryViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder {
-        return RepositoryViewHolder.create(parent)
+        return RepositoryViewHolder.create(parent, onRepositoryClicked)
     }
 
     override fun onBindViewHolder(holder: RepositoryViewHolder, position: Int) {

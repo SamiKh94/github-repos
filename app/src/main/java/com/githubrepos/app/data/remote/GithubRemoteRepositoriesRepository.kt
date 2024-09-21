@@ -40,25 +40,13 @@ class GithubRemoteRepositoriesRepository @Inject constructor(
                     name = repository.name,
                     description = repository.description,
                     stars = repository.stargazersCount,
-                    owner = repository.owner
+                    owner = repository.owner,
+                    forks = repository.forks,
+                    githubLink = repository.htmlUrl,
+                    language = repository.language,
+                    createdAt = repository.createdAt
                 )
             }
         }
     }
-
-    override fun getRepositories(creationPeriod: CreationPeriod): Flow<List<RepositoryItem>> =
-        flow {
-            emit(
-                datasource.getRepositories(creationPeriod = creationPeriod)?.repositories.orEmpty()
-                    .map { repository ->
-                        RepositoryItem(
-                            id = repository.id,
-                            name = repository.name,
-                            description = repository.description,
-                            stars = repository.stargazersCount,
-                            owner = repository.owner
-                        )
-                    }
-            )
-        }.flowOn(ioDispatcher)
 }
