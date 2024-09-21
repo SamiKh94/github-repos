@@ -14,6 +14,5 @@ interface GithubRepositoriesRepository {
 
     fun getPagedRepositories(
         creationPeriod: CreationPeriod,
-        page: Int
     ): Flow<PagingData<RepositoryItem>>
 }

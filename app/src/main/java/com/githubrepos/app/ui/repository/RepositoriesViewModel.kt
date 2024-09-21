@@ -29,7 +29,7 @@ class RepositoriesViewModel @Inject constructor(private val githubRemoteReposito
     @OptIn(ExperimentalCoroutinesApi::class)
     val repositoriesUiState: StateFlow<RepositoryUiState> =
         _creationPeriodMutableStateFlow.flatMapLatest {
-            repositoriesUiState(githubRemoteRepositoriesRepository, it)
+            repositoriesUiState()
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
@@ -37,15 +37,10 @@ class RepositoriesViewModel @Inject constructor(private val githubRemoteReposito
         )
 
     private fun repositoriesUiState(
-        githubRemoteRepositoriesRepository: GithubRemoteRepositoriesRepository,
-        creationPeriod: CreationPeriod,
     ): Flow<RepositoryUiState> {
 
         // Observe topic information
-        val topicStream: Flow<List<RepositoryItem>> =
-            githubRemoteRepositoriesRepository.getRepositories(
-                creationPeriod = creationPeriod
-            )
+        val topicStream: Flow<PagingData<RepositoryItem>> = getPagedRepositories()
 
         return topicStream
             .asResult()
@@ -69,13 +64,14 @@ class RepositoriesViewModel @Inject constructor(private val githubRemoteReposito
         _creationPeriodMutableStateFlow.value = value
     }
 
-    fun getPagedRepositories(): Flow<PagingData<RepositoryItem>> {
-        return githubRemoteRepositoriesRepository.getPagedRepositories(creationPeriod = _creationPeriodMutableStateFlow.value, page = 1).cachedIn(viewModelScope)
+    private fun getPagedRepositories(): Flow<PagingData<RepositoryItem>> {
+        return githubRemoteRepositoriesRepository.getPagedRepositories(creationPeriod = _creationPeriodMutableStateFlow.value)
+            .cachedIn(viewModelScope)
     }
 }
 
 sealed interface RepositoryUiState {
-    data class Success(val repositories: List<RepositoryItem>) : RepositoryUiState
+    data class Success(val repositories: PagingData<RepositoryItem>) : RepositoryUiState
     data object Error : RepositoryUiState
     data object Loading : RepositoryUiState
 }

@@ -1,14 +1,12 @@
 package com.githubrepos.app.ui.repository
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubrepos.app.R
 import com.githubrepos.app.databinding.FragmentRepositoriesListBinding
@@ -25,7 +23,8 @@ class RepositoryFragment : Fragment() {
 
     private lateinit var binding: FragmentRepositoriesListBinding
     private val viewModel by viewModels<RepositoriesViewModel>()
-//    private val repositoriesAdapter: RepositoriesListAdapter = RepositoriesListAdapter()
+
+    //    private val repositoriesAdapter: RepositoriesListAdapter = RepositoriesListAdapter()
     private val repositoriesAdapter: PagedRepositoriesAdapter = PagedRepositoriesAdapter()
 
     override fun onCreateView(
@@ -89,26 +88,24 @@ class RepositoryFragment : Fragment() {
     private fun observeViewModelStates() {
 
         binding.lifecycleOwner = viewLifecycleOwner
+
         lifecycleScope.launchWhenStarted {
-            viewModel.getPagedRepositories().collectLatest { pagingData ->
-                repositoriesAdapter.submitData(pagingData)
+            viewModel.repositoriesUiState.collect {
+                when (it) {
+                    is RepositoryUiState.Error -> {
+                        binding.isLoading = false
+                    }
+
+                    is RepositoryUiState.Loading -> {
+                        binding.isLoading = true
+                    }
+
+                    is RepositoryUiState.Success -> {
+                        repositoriesAdapter.submitData(it.repositories)
+                        binding.isLoading = false
+                    }
+                }
             }
         }
-//        lifecycleScope.launchWhenStarted {
-//            viewModel.repositoriesUiState.collect {
-//                when (it) {
-//                    is RepositoryUiState.Error -> {}
-//                    is RepositoryUiState.Loading -> {
-//                        binding.isLoading = true
-//                    }
-//
-//                    is RepositoryUiState.Success -> {
-//                        repositoriesAdapter.submitList(it.repositories)
-//                        Log.d("Size", "Size: ${it.repositories.size}")
-//                        binding.isLoading = false
-//                    }
-//                }
-//            }
-//        }
     }
 }

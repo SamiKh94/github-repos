@@ -26,7 +26,6 @@ class GithubRemoteRepositoriesRepository @Inject constructor(
 
     override fun getPagedRepositories(
         creationPeriod: CreationPeriod,
-        page: Int
     ): Flow<PagingData<RepositoryItem>> {
         return Pager(
             config = PagingConfig(
