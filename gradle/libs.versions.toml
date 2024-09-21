@@ -27,6 +27,7 @@ androidxHiltNavigationCompose = "1.2.0"
 androidx-constraintlayout = "2.1.4"
 material = "1.9.0"
 coil = "2.7.0"
+paging = "3.2.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -86,6 +87,7 @@ material = { module = "com.google.android.material:material", version.ref = "mat
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
+paging-runtime = { module = "androidx.paging:paging-runtime-ktx", version.ref = "paging" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

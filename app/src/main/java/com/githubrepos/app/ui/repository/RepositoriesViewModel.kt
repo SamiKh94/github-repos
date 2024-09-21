@@ -2,6 +2,8 @@ package com.githubrepos.app.ui.repository
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.githubrepos.app.data.remote.GithubRemoteRepositoriesRepository
 import com.githubrepos.app.data.remote.RepositoryItem
 import com.githubrepos.app.domain.models.CreationPeriod
@@ -19,7 +21,7 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class RepositoriesViewModel @Inject constructor(githubRemoteRepositoriesRepository: GithubRemoteRepositoriesRepository) :
+class RepositoriesViewModel @Inject constructor(private val githubRemoteRepositoriesRepository: GithubRemoteRepositoriesRepository) :
     ViewModel() {
 
     private val _creationPeriodMutableStateFlow = MutableStateFlow(CreationPeriod.A_MONTH)
@@ -65,6 +67,10 @@ class RepositoriesViewModel @Inject constructor(githubRemoteRepositoriesReposito
     fun updateCreationPeriodSelection(value: CreationPeriod) {
         if (value == _creationPeriodMutableStateFlow.value) return
         _creationPeriodMutableStateFlow.value = value
+    }
+
+    fun getPagedRepositories(): Flow<PagingData<RepositoryItem>> {
+        return githubRemoteRepositoriesRepository.getPagedRepositories(creationPeriod = _creationPeriodMutableStateFlow.value, page = 1).cachedIn(viewModelScope)
     }
 }
 

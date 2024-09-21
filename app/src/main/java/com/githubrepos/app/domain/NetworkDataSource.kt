@@ -18,11 +18,12 @@ package com.githubrepos.app.domain
 
 import com.githubrepos.app.domain.models.CreationPeriod
 import com.githubrepos.app.domain.models.RepositoriesResponse
-import com.githubrepos.app.domain.models.Repository
 
 /**
  * Interface representing network calls to the NIA backend
  */
 interface NetworkDataSource {
+    suspend fun getPagedRepositories(creationPeriod: CreationPeriod, page: Int): RepositoriesResponse?
+
     suspend fun getRepositories(creationPeriod: CreationPeriod): RepositoriesResponse?
 }

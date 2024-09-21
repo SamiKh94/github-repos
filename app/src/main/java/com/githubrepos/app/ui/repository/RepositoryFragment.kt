@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubrepos.app.R
 import com.githubrepos.app.databinding.FragmentRepositoriesListBinding
 import com.githubrepos.app.domain.models.CreationPeriod
 import com.githubrepos.app.utils.SpacesItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 /**
  * A fragment representing a list of Items.
@@ -23,7 +25,8 @@ class RepositoryFragment : Fragment() {
 
     private lateinit var binding: FragmentRepositoriesListBinding
     private val viewModel by viewModels<RepositoriesViewModel>()
-    private val repositoriesAdapter: RepositoriesListAdapter = RepositoriesListAdapter()
+//    private val repositoriesAdapter: RepositoriesListAdapter = RepositoriesListAdapter()
+    private val repositoriesAdapter: PagedRepositoriesAdapter = PagedRepositoriesAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +37,16 @@ class RepositoryFragment : Fragment() {
         with(binding.list) {
             layoutManager = LinearLayoutManager(context)
             adapter = repositoriesAdapter
+//            repositoriesAdapter.addLoadStateListener { loadState ->
+//                // Show loading spinner during initial load or refresh
+//                val isLoading = loadState.source.refresh is LoadState.Loading
+//                progressBar.isVisible = isLoading
+//
+//                // Handle error state
+//                val isError = loadState.source.refresh is LoadState.Error
+//                errorTextView.isVisible = isError
+//            }
+
             addItemDecoration(
                 SpacesItemDecoration()
             )
@@ -76,22 +89,26 @@ class RepositoryFragment : Fragment() {
     private fun observeViewModelStates() {
 
         binding.lifecycleOwner = viewLifecycleOwner
-
         lifecycleScope.launchWhenStarted {
-            viewModel.repositoriesUiState.collect {
-                when (it) {
-                    is RepositoryUiState.Error -> {}
-                    is RepositoryUiState.Loading -> {
-                        binding.isLoading = true
-                    }
-
-                    is RepositoryUiState.Success -> {
-                        repositoriesAdapter.submitList(it.repositories)
-                        Log.d("Size", "Size: ${it.repositories.size}")
-                        binding.isLoading = false
-                    }
-                }
+            viewModel.getPagedRepositories().collectLatest { pagingData ->
+                repositoriesAdapter.submitData(pagingData)
             }
         }
+//        lifecycleScope.launchWhenStarted {
+//            viewModel.repositoriesUiState.collect {
+//                when (it) {
+//                    is RepositoryUiState.Error -> {}
+//                    is RepositoryUiState.Loading -> {
+//                        binding.isLoading = true
+//                    }
+//
+//                    is RepositoryUiState.Success -> {
+//                        repositoriesAdapter.submitList(it.repositories)
+//                        Log.d("Size", "Size: ${it.repositories.size}")
+//                        binding.isLoading = false
+//                    }
+//                }
+//            }
+//        }
     }
 }

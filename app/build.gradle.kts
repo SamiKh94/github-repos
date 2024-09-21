@@ -113,6 +113,7 @@ dependencies {
 
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.svg)
+    implementation(libs.paging.runtime)
 
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.fragment.ktx)

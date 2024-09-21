@@ -24,6 +24,12 @@ private interface RetrofitNetworkApi {
         @Query("q") queries: String
     ): RepositoriesResponse
 
+    @GET(value = "repositories?q=created&sort=stars&order=desc&per_page=100")
+    suspend fun getPagedRepositories(
+        @Query("date") date: CreationPeriod,
+        @Query("page") page: Int
+    ): RepositoriesResponse
+
 }
 
 private const val BASE_URL = BuildConfig.GITHUB_URL
@@ -48,6 +54,13 @@ internal class RetrofitNetwork @Inject constructor(
             .create(RetrofitNetworkApi::class.java)
     }
 
-    override suspend fun getRepositories(creationPeriod: CreationPeriod): RepositoriesResponse =
+    override suspend fun getRepositories(
+        creationPeriod: CreationPeriod,
+    ): RepositoriesResponse =
         networkApi.getRepositories(queries = QueryBuilder(creationPeriod = creationPeriod).build())
+
+    override suspend fun getPagedRepositories(
+        creationPeriod: CreationPeriod,
+        page: Int
+    ): RepositoriesResponse = networkApi.getPagedRepositories(date = creationPeriod, page = page)
 }
