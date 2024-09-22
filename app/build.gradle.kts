@@ -122,6 +122,11 @@ dependencies {
 
     implementation(libs.chrome.custom.tabs)
 
+    // Room
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
+
     implementation(libs.androidx.datastore.core.okio.jvm)
 
     testImplementation(libs.junit)

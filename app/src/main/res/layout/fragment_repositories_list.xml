@@ -68,7 +68,7 @@
                 android:layout_marginRight="8dp"
                 android:visibility="@{isLoading ? View.GONE : View.VISIBLE}"
                 app:layoutManager="LinearLayoutManager"
-                tools:context=".ui.repository.RepositoryFragment"
+                tools:context=".ui.repository.AllRepositoriesFragment"
                 tools:listitem="@layout/list_item_repository" />
         </LinearLayout>
 

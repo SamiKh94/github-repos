@@ -14,20 +14,22 @@ import com.githubrepos.app.domain.models.CreationPeriod
 import com.githubrepos.app.ui.repository.details.RepositoryDetailsActivity
 import com.githubrepos.app.utils.SpacesItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 
 /**
  * A fragment representing a list of Items.
  */
 @AndroidEntryPoint
-class RepositoryFragment : Fragment() {
+class AllRepositoriesFragment : Fragment() {
 
     private lateinit var binding: FragmentRepositoriesListBinding
     private val viewModel by viewModels<RepositoriesViewModel>()
 
-        private val repositoriesAdapter: PagedRepositoriesAdapter = PagedRepositoriesAdapter {
-        startActivity(RepositoryDetailsActivity.newIntent(requireContext(), it))
-    }
+    private val repositoriesAdapter: PagedRepositoriesAdapter =
+        PagedRepositoriesAdapter(onAddToFavReposClicked = {
+            viewModel.markRepositoryAsFavorite(it)
+        }, onRepositoryClicked = {
+            startActivity(RepositoryDetailsActivity.newIntent(requireContext(), it))
+        })
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

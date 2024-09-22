@@ -1,6 +1,5 @@
 package com.githubrepos.app.ui.repository
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +9,8 @@ import com.githubrepos.app.databinding.ListItemRepositoryBinding
 
 class RepositoryViewHolder(
     private val binding: ListItemRepositoryBinding,
-    onRepositoryClicked: (RepositoryItem) -> Unit
+    onRepositoryClicked: (RepositoryItem) -> Unit,
+    onAddToFavReposClicked: (RepositoryItem) -> Unit
 ) :
     RecyclerView.ViewHolder(binding.root) {
 
@@ -20,12 +20,17 @@ class RepositoryViewHolder(
         binding.root.setOnClickListener {
             onRepositoryClicked.invoke(repository)
         }
+
+        binding.addToFavRepos.setOnClickListener {
+            binding.isFavorite = !binding.isFavorite
+            onAddToFavReposClicked.invoke(repository)
+        }
     }
 
     fun bind(repository: RepositoryItem) {
         this.repository = repository
         with(binding) {
-            ownerAvatarUrl = repository.owner.avatarUrl
+            ownerAvatarUrl = repository.ownerAvatarUrl
             repoName.text = repository.name
             repoDesc.text =
                 if (repository.description.isNullOrBlank()) binding.root.context.getString(
@@ -34,7 +39,7 @@ class RepositoryViewHolder(
 
             star.text = repository.stars.toString()
             ownerName.text = binding.root.context.getString(
-                R.string.owner_name, repository.owner.login
+                R.string.owner_name, repository.ownerLoginName
             )
         }
     }
@@ -42,11 +47,12 @@ class RepositoryViewHolder(
     companion object {
         fun create(
             parent: ViewGroup,
-            onRepositoryClicked: (RepositoryItem) -> Unit
+            onRepositoryClicked: (RepositoryItem) -> Unit,
+            onAddToFavReposClicked: (RepositoryItem) -> Unit
         ): RepositoryViewHolder {
             return RepositoryViewHolder(
                 ListItemRepositoryBinding.inflate(LayoutInflater.from(parent.context)),
-                onRepositoryClicked
+                onAddToFavReposClicked, onRepositoryClicked
             )
         }
     }

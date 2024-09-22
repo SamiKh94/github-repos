@@ -1,6 +1,7 @@
 package com.githubrepos.app.data.remote
 
 import android.os.Parcelable
+import com.githubrepos.app.di.RepositoryEntity
 import com.githubrepos.app.domain.models.Owner
 import kotlinx.parcelize.Parcelize
 import java.text.SimpleDateFormat
@@ -14,13 +15,16 @@ data class RepositoryItem(
     val id: Int,
     val name: String,
     val description: String?,
-    val owner: Owner,
+    val ownerLoginName: String,
+    val ownerAvatarUrl: String?,
     val stars: Int,
     val forks: Int,
     val githubLink: String,
     val language: String?,
     val createdAt: String,
+    val isFavorite: Boolean = false
 ) : Parcelable {
+
 
     val formattedCreatedAtDate: String
         get() {
@@ -30,4 +34,20 @@ data class RepositoryItem(
             val formattedDate = outputFormat.format(date)
             return formattedDate
         }
+}
+
+
+fun RepositoryItem.asEntity(): RepositoryEntity {
+    return RepositoryEntity(
+        id = id,
+        name = name,
+        description = description,
+        ownerLoginName = ownerLoginName,
+        ownerAvatarUrl = ownerAvatarUrl,
+        stars = stars,
+        forks = forks,
+        githubLink = githubLink,
+        language = language,
+        createdAt = createdAt
+    )
 }

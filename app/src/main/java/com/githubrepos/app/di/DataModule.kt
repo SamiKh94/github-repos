@@ -1,5 +1,7 @@
 package com.githubrepos.app.di
 
+import com.githubrepos.app.data.offline.GithubFavoriteRepositoriesOfflineRepository
+import com.githubrepos.app.data.offline.GithubFavoriteRepositoriesOfflineRepositoryImpl
 import com.githubrepos.app.data.remote.GithubRemoteRepositoriesRepository
 import com.githubrepos.app.data.remote.GithubRepositoriesRepository
 import dagger.Binds
@@ -13,6 +15,11 @@ abstract class DataModule {
 
     @Binds
     internal abstract fun bindsRepositoriesRepository(
-        topicsRepository: GithubRemoteRepositoriesRepository,
+        repositoriesRepository: GithubRemoteRepositoriesRepository,
     ): GithubRepositoriesRepository
+
+    @Binds
+    internal abstract fun bindsFavGithubRepositoriesRepository(
+        repositoriesRepository: GithubFavoriteRepositoriesOfflineRepositoryImpl,
+    ): GithubFavoriteRepositoriesOfflineRepository
 }

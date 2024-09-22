@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.githubrepos.app.data.offline.GithubFavoriteRepositoriesOfflineRepository
 import com.githubrepos.app.data.remote.GithubRemoteRepositoriesRepository
 import com.githubrepos.app.data.remote.RepositoryItem
 import com.githubrepos.app.domain.models.CreationPeriod
@@ -18,10 +19,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RepositoriesViewModel @Inject constructor(private val githubRemoteRepositoriesRepository: GithubRemoteRepositoriesRepository) :
+class RepositoriesViewModel @Inject constructor(
+    private val githubRemoteRepositoriesRepository: GithubRemoteRepositoriesRepository,
+    private val githubFavoriteRepositoriesOfflineRepository: GithubFavoriteRepositoriesOfflineRepository
+) :
     ViewModel() {
 
     private val _creationPeriodMutableStateFlow = MutableStateFlow(CreationPeriod.A_MONTH)
@@ -67,6 +72,12 @@ class RepositoriesViewModel @Inject constructor(private val githubRemoteReposito
     private fun getPagedRepositories(): Flow<PagingData<RepositoryItem>> {
         return githubRemoteRepositoriesRepository.getPagedRepositories(creationPeriod = _creationPeriodMutableStateFlow.value)
             .cachedIn(viewModelScope)
+    }
+
+    fun markRepositoryAsFavorite(repositoryItem: RepositoryItem) {
+        viewModelScope.launch {
+            githubFavoriteRepositoriesOfflineRepository.insertFavGithubRepository(repositoryItem = repositoryItem)
+        }
     }
 }
 
