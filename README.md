@@ -1,4 +1,3 @@
-![image (2)](https://github.com/user-attachments/assets/8da05705-6c2f-4744-8764-2cdbb6703561)
 # Github Repos App
 
 This app leverages the GitHub Repositories Search API to allow users to search for repositories created in the past day, week, or month. Users can apply filters and view repository details by clicking on any search result. The app includes a search bar to refine results further and enables users to mark repositories as favorites for offline access. Built using the latest Android tech stack with MVVM architecture, the app demonstrates efficient handling of network requests, offline caching, and state management to deliver a seamless user experience.
@@ -6,15 +5,15 @@ This app leverages the GitHub Repositories Search API to allow users to search f
 # Features
 
 All Repositories Page
-![image (2)](https://github.com/user-attachments/assets/5d24612e-fc92-4788-996a-00b1c41e1925)
+![all_repositories.png](assets/all_repositories.png)
 
 Favorite Repositories Page 
-![image (7)](https://github.com/user-attachments/assets/391cb284-abec-4342-90f3-a4703ecfe8d8)
+![fav_repositories.png](assets/fav_repositories.png)
 
 Repository Details Page
-![image (8)](https://github.com/user-attachments/assets/e2d7403f-ae7a-4159-b0a9-06f857e00b3f)
+![repository_details.png](assets/repository_details.png)
 
-# Architicture
+# Architecture
 
 # MVVM Architecture Overview
 
