@@ -1,6 +1,5 @@
 package com.githubrepos.app.ui.repository
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.githubrepos.app.domain.NetworkDataSource
@@ -24,7 +23,6 @@ class RepositoriesPagingSource(
             val nextPage = RepositoriesPagingSingleton.nextPage
             val prevPage = if (currentPage == 1) null else currentPage - 1
 
-            Log.d("NextPage", "Next: $nextPage")
             LoadResult.Page(
                 data = data,
                 prevKey = prevPage,

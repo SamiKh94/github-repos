@@ -18,6 +18,7 @@ import com.githubrepos.app.domain.models.CreationPeriod
 import com.githubrepos.app.ui.repository.details.RepositoryDetailsActivity
 import com.githubrepos.app.utils.SpacesItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 /**
@@ -60,12 +61,23 @@ class AllRepositoriesFragment : Fragment() {
                     footer = RepositoriesLoadStateAdapter()
                 )
 
-            repositoriesAdapter.addLoadStateListener { loadState ->
 
-                if (loadState.refresh is LoadState.Loading && repositoriesAdapter.itemCount < 1) {
-                    binding.isLoading = true
-                } else {
-                    binding.isLoading = false
+            repositoriesAdapter.addLoadStateListener {
+                when (it.refresh) {
+                    is LoadState.NotLoading -> {
+                        binding.isLoading = false
+                    }
+
+                    is LoadState.Loading -> {
+                        binding.isLoading = true
+                        it.append.endOfPaginationReached && repositoriesAdapter.itemCount > 1
+                    }
+
+                    is LoadState.Error -> {
+                        if (repositoriesAdapter.itemCount < 1) {
+                            binding.isLoading = false
+                        }
+                    }
                 }
             }
 
@@ -113,7 +125,7 @@ class AllRepositoriesFragment : Fragment() {
     private fun observeViewModelStates() {
         viewLifecycleOwner.lifecycleScope.launch {
 
-            viewModel.repositoriesResultUIState.collect {
+            viewModel.repositoriesResultUIState.collectLatest {
                 when (it) {
                     is RepositoryUiState.Error -> {
                         binding.isLoading = false

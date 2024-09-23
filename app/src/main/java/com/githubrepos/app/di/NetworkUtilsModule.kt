@@ -8,8 +8,6 @@ import coil.util.DebugLogger
 import com.githubrepos.app.BuildConfig
 import com.githubrepos.app.domain.RequestHeadersInterceptor
 import com.githubrepos.app.domain.ResponseInterceptor
-import com.google.gson.ExclusionStrategy
-import com.google.gson.FieldAttributes
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
@@ -21,7 +19,6 @@ import kotlinx.serialization.json.Json
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import java.lang.reflect.Modifier
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 

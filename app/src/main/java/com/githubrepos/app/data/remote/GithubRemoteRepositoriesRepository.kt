@@ -23,7 +23,7 @@ class GithubRemoteRepositoriesRepository @Inject constructor(
     ): Flow<PagingData<RepositoryItem>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 20,  // Number of items per page
+                pageSize = 100,  // Number of items per page
                 enablePlaceholders = false  // Disable empty placeholders
             ),
             pagingSourceFactory = { RepositoriesPagingSource(datasource, creationPeriod) }

@@ -24,9 +24,9 @@ private interface RetrofitNetworkApi {
         @Query("q") queries: String
     ): RepositoriesResponse
 
-    @GET(value = "repositories?q=created&sort=stars&order=desc&per_page=100")
+    @GET(value = "repositories?sort=stars&order=desc&per_page=100")
     suspend fun getPagedRepositories(
-        @Query("date") date: CreationPeriod,
+        @Query("q") queries: String,
         @Query("page") page: Int
     ): RepositoriesResponse
 
@@ -62,5 +62,8 @@ internal class RetrofitNetwork @Inject constructor(
     override suspend fun getPagedRepositories(
         creationPeriod: CreationPeriod,
         page: Int
-    ): RepositoriesResponse = networkApi.getPagedRepositories(date = creationPeriod, page = page)
+    ): RepositoriesResponse = networkApi.getPagedRepositories(
+        queries = QueryBuilder(creationPeriod = creationPeriod).build(),
+        page = page
+    )
 }
