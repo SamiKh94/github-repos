@@ -5,9 +5,11 @@ This app leverages the GitHub Repositories Search API to allow users to search f
 
 # Features
 
-![image (7).png](..%2F..%2FDownloads%2Fimage%20%287%29.png)
-![image (8).png](..%2F..%2FDownloads%2Fimage%20%288%29.png)
-![image (2).png](..%2F..%2FDownloads%2Fimage%20%282%29.png)
+![image (2)](https://github.com/user-attachments/assets/53ac811e-8bed-46f7-bab4-7f70046251c8)
+
+![image (7)](https://github.com/user-attachments/assets/126f6a8f-5dc9-4750-a9cd-77f241c7588c)
+
+![image (8)](https://github.com/user-attachments/assets/b1a82740-ba5a-473e-9c0c-f054ef756b23)
 
 # Architicture
 
