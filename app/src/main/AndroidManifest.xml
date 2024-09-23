@@ -27,6 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.githubrepos.app.ui.repository.details.RepositoryDetailsActivity" />
+        <activity android:name="com.githubrepos.app.ui.repository.FavoriteRepositoriesActivity" />
     </application>
 
 </manifest>

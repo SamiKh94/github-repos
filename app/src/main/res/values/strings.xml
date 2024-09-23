@@ -5,4 +5,5 @@
     <string name="owner_name">\@%s</string>
     <string name="favorite_repositories">Favorite Repositories</string>
     <string name="all_repositories">All Repositories</string>
+    <string name="search">Search</string>
 </resources>

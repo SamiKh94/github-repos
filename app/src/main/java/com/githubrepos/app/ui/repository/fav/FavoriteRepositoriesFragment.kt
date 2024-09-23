@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -23,7 +24,6 @@ class FavoriteRepositoriesFragment : Fragment() {
     private val viewModel by viewModels<FavoriteRepositoriesViewModel>()
     private val repositoriesAdapter: FavoriteRepositoriesListAdapter =
         FavoriteRepositoriesListAdapter(onAddToFavReposClicked = {
-//            viewModel.markRepositoryAsFavorite(it)
         }, onRepositoryClicked = {
             startActivity(RepositoryDetailsActivity.newIntent(requireContext(), it))
         })
@@ -31,7 +31,7 @@ class FavoriteRepositoriesFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentFavoriteRepositoriesBinding.inflate(inflater)
         return binding.root
     }
@@ -43,6 +43,11 @@ class FavoriteRepositoriesFragment : Fragment() {
     }
 
     private fun initViews() {
+
+        binding.searchView.addTextChangedListener {
+            viewModel.performSearch(it.toString())
+        }
+
         with(binding.list) {
             layoutManager = LinearLayoutManager(context)
             adapter = repositoriesAdapter

@@ -5,9 +5,12 @@ import kotlinx.coroutines.flow.Flow
 
 interface GithubFavoriteRepositoriesOfflineRepository {
 
-    suspend fun getFavGithubRepositories(): Flow<List<RepositoryItem>>
+    fun getFavGithubRepositories(): Flow<List<RepositoryItem>>
 
     suspend fun insertFavGithubRepository(repositoryItem: RepositoryItem)
 
+    suspend fun deleteFavGithubRepository(repositoryItem: RepositoryItem)
+
     fun observeAllFavouriteRepositories(): Flow<List<RepositoryItem>>
+
 }

@@ -30,6 +30,7 @@ class RepositoryViewHolder(
     fun bind(repository: RepositoryItem) {
         this.repository = repository
         with(binding) {
+            isFavorite = repository.isFavorite
             ownerAvatarUrl = repository.ownerAvatarUrl
             repoName.text = repository.name
             repoDesc.text =

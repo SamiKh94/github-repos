@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Upsert
+import com.githubrepos.app.data.remote.RepositoryItem
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -37,5 +38,5 @@ interface FavRepositoriesDao {
             WHERE id in (:ids)
         """,
     )
-    suspend fun deleteRepositories(ids: List<String>)
+    suspend fun deleteRepositories(ids: List<Int>)
 }

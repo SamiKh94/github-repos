@@ -9,15 +9,29 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GithubFavoriteRepositoriesOfflineRepositoryImpl @Inject constructor(private val repositoriesDao: FavRepositoriesDao) :
+class GithubFavoriteRepositoriesOfflineRepositoryImpl @Inject constructor(
+    private val repositoriesDao: FavRepositoriesDao,
+) :
     GithubFavoriteRepositoriesOfflineRepository {
-    override suspend fun getFavGithubRepositories(): Flow<List<RepositoryItem>> {
+    override fun getFavGithubRepositories(): Flow<List<RepositoryItem>> {
         return repositoriesDao.getFavRepositoriesEntities()
             .map { it.map { entity -> entity.asExternalModel() } }
     }
 
     override suspend fun insertFavGithubRepository(repositoryItem: RepositoryItem) {
-        repositoriesDao.upsertRepositories(listOf(repositoryItem.asEntity()))
+        repositoriesDao.upsertRepositories(
+            listOf(
+                repositoryItem.copy(isFavorite = true).asEntity()
+            )
+        )
+    }
+
+    override suspend fun deleteFavGithubRepository(repositoryItem: RepositoryItem) {
+        repositoriesDao.deleteRepositories(
+            listOf(
+                repositoryItem.id
+            )
+        )
     }
 
     override fun observeAllFavouriteRepositories(): Flow<List<RepositoryItem>> {
