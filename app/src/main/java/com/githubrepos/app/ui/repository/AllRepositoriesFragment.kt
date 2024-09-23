@@ -5,39 +5,75 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.CombinedLoadStates
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubrepos.app.R
 import com.githubrepos.app.databinding.FragmentRepositoriesListBinding
 import com.githubrepos.app.domain.models.CreationPeriod
+import com.githubrepos.app.ui.repository.details.RepositoryDetailsActivity
 import com.githubrepos.app.utils.SpacesItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 /**
  * A fragment representing a list of Items.
  */
 @AndroidEntryPoint
-class RepositoryFragment : Fragment() {
+class AllRepositoriesFragment : Fragment() {
 
     private lateinit var binding: FragmentRepositoriesListBinding
     private val viewModel by viewModels<RepositoriesViewModel>()
-    private val repositoriesAdapter: RepositoriesListAdapter = RepositoriesListAdapter()
+
+    private val repositoriesAdapter: PagedRepositoriesAdapter =
+        PagedRepositoriesAdapter(onAddToFavReposClicked = {
+            viewModel.markRepositoryAsFavorite(it)
+            updatePaginationData()
+        }, onRepositoryClicked = {
+            startActivity(RepositoryDetailsActivity.newIntent(requireContext(), it))
+        })
+
+    private fun updatePaginationData() {
+        repositoriesAdapter.refresh()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentRepositoriesListBinding.inflate(inflater)
 
+        binding.searchView.addTextChangedListener {
+            viewModel.performSearch(it.toString())
+        }
+
         with(binding.list) {
+
             layoutManager = LinearLayoutManager(context)
             adapter = repositoriesAdapter
+                .withLoadStateHeaderAndFooter(
+                    header = RepositoriesLoadStateAdapter(),
+                    footer = RepositoriesLoadStateAdapter()
+                )
+
+            repositoriesAdapter.addLoadStateListener { loadState ->
+
+                if (loadState.refresh is LoadState.Loading && repositoriesAdapter.itemCount < 1) {
+                    binding.isLoading = true
+                } else {
+                    binding.isLoading = false
+                }
+            }
+
             addItemDecoration(
                 SpacesItemDecoration()
             )
         }
+
         return binding.root
     }
 
@@ -49,6 +85,7 @@ class RepositoryFragment : Fragment() {
 
     private fun initViews() {
         with(binding) {
+            lifecycleOwner = viewLifecycleOwner
             with(chipGroup) {
                 check(R.id.chipMonth)
                 setOnCheckedStateChangeListener { _, checkedIds ->
@@ -74,20 +111,20 @@ class RepositoryFragment : Fragment() {
     }
 
     private fun observeViewModelStates() {
+        viewLifecycleOwner.lifecycleScope.launch {
 
-        binding.lifecycleOwner = viewLifecycleOwner
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.repositoriesUiState.collect {
+            viewModel.repositoriesResultUIState.collect {
                 when (it) {
-                    is RepositoryUiState.Error -> {}
+                    is RepositoryUiState.Error -> {
+                        binding.isLoading = false
+                    }
+
                     is RepositoryUiState.Loading -> {
                         binding.isLoading = true
                     }
 
                     is RepositoryUiState.Success -> {
-                        repositoriesAdapter.submitList(it.repositories)
-                        Log.d("Size", "Size: ${it.repositories.size}")
+                        repositoriesAdapter.submitData(it.repositories)
                         binding.isLoading = false
                     }
                 }

@@ -1,14 +1,18 @@
-package com.githubrepos.app.ui.repository
+package com.githubrepos.app.ui.repository.fav
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.githubrepos.app.data.remote.RepositoryItem
+import com.githubrepos.app.ui.repository.RepositoryViewHolder
 
-class RepositoriesListAdapter : ListAdapter<RepositoryItem, RepositoryViewHolder>(REPO_COMPARATOR) {
+class FavoriteRepositoriesListAdapter(
+    private val onRepositoryClicked: (RepositoryItem) -> Unit,
+    private val onAddToFavReposClicked: (RepositoryItem) -> Unit
+) : ListAdapter<RepositoryItem, RepositoryViewHolder>(REPO_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder {
-        return RepositoryViewHolder.create(parent)
+        return RepositoryViewHolder.create(parent, onAddToFavReposClicked, onRepositoryClicked)
     }
 
     override fun onBindViewHolder(holder: RepositoryViewHolder, position: Int) {

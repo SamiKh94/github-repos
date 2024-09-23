@@ -9,7 +9,7 @@
 
         <variable
             name="isLoading"
-            type="boolean"/>
+            type="boolean" />
     </data>
 
     <FrameLayout
@@ -19,55 +19,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="@{!isLoading ? View.VISIBLE : View.GONE}">
+            android:orientation="vertical">
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroup"
-                style="@style/MaterialChips"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="horizontal"
-                app:selectionRequired="true"
-                app:singleSelection="true">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipMonth"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="Month"
-                    app:checkedIconVisible="false" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipWeek"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Week"
-                    app:checkedIconVisible="false" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipDay"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Day"
-                    app:checkedIconVisible="false" />
-
-            </com.google.android.material.chip.ChipGroup>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="24dp"
 
+                android:layout_marginHorizontal="24dp"
                 android:layout_marginVertical="16dp"
                 android:hint="@string/search"
-                android:visibility="@{!isLoading ? View.VISIBLE : View.GONE}"
                 app:boxBackgroundColor="@color/gray_f5"
                 app:boxBackgroundMode="outline"
                 app:boxCornerRadiusBottomEnd="10dp"
@@ -90,9 +52,9 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:visibility="@{!isLoading ? View.VISIBLE : View.GONE}"
+                android:visibility="@{isLoading ? View.GONE : View.VISIBLE}"
                 app:layoutManager="LinearLayoutManager"
-                tools:context=".ui.repository.AllRepositoriesFragment"
+                tools:context=".ui.repository.RepositoryFragment"
                 tools:listitem="@layout/list_item_repository" />
         </LinearLayout>
 

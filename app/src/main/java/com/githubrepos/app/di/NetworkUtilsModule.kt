@@ -6,6 +6,8 @@ import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.util.DebugLogger
 import com.githubrepos.app.BuildConfig
+import com.githubrepos.app.domain.RequestHeadersInterceptor
+import com.githubrepos.app.domain.ResponseInterceptor
 import com.google.gson.ExclusionStrategy
 import com.google.gson.FieldAttributes
 import com.google.gson.Gson
@@ -43,9 +45,10 @@ class NetworkUtilsModule {
 
         val okHttpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()
             .addInterceptor(httpLoggingInterceptor)
+            .addInterceptor(ResponseInterceptor())
+            .addInterceptor(RequestHeadersInterceptor())
             .readTimeout(timeOut, TimeUnit.SECONDS)
             .writeTimeout(timeOut, TimeUnit.SECONDS)
-
 
         return okHttpClientBuilder.build()
     }

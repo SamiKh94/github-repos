@@ -2,12 +2,14 @@ plugins {
     kotlin("kapt")
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+
     alias(libs.plugins.compose.compiler)
     id("com.google.devtools.ksp")
     alias(libs.plugins.hilt)
 
     // Add this line to apply kapt in Kotlin DSL
     id("kotlinx-serialization")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -113,9 +115,17 @@ dependencies {
 
     implementation(libs.coil.kt)
     implementation(libs.coil.kt.svg)
+    implementation(libs.paging.runtime)
 
     implementation(libs.androidx.fragment)
     implementation(libs.androidx.fragment.ktx)
+
+    implementation(libs.chrome.custom.tabs)
+
+    // Room
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
 
     implementation(libs.androidx.datastore.core.okio.jvm)
 

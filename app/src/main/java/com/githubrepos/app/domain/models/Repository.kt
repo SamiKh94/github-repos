@@ -4,7 +4,6 @@ package com.githubrepos.app.domain.models
 import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
-@Serializable
 data class Repository(
     @SerializedName("allow_forking")
     val allowForking: Boolean,
