@@ -7,7 +7,7 @@ This app leverages the GitHub Repositories Search API to allow users to search f
 <table>
   <tr>
     <td><img src="https://i.ibb.co/fvrt0SJ/Screenshot-2024-09-23-at-11-35-02-AM.png" alt="Screenshot-2024-09-23-at-11-35-02-AM" border="0" /></td>
-    <td>><img src="https://i.ibb.co/qy4GgbD/Screenshot-2024-09-23-at-11-36-20-AM.png" alt="Screenshot-2024-09-23-at-11-36-20-AM" border="0" /></td>
+    <td><img src="https://i.ibb.co/qy4GgbD/Screenshot-2024-09-23-at-11-36-20-AM.png" alt="Screenshot-2024-09-23-at-11-36-20-AM" border="0" /></td>
     <td><img src="https://i.ibb.co/4gTqF6r/Screenshot-2024-09-23-at-11-36-29-AM.png" alt="Screenshot-2024-09-23-at-11-36-29-AM" border="0" /></td>
   </tr>
 </table>
