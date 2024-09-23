@@ -5,13 +5,13 @@ This app leverages the GitHub Repositories Search API to allow users to search f
 # Features
 
 All Repositories Page
-![all_repositories](https://github.com/user-attachments/assets/b4feedd2-750a-4c25-a3ae-e9aa467300c7)
+![all_repositories](https://ibb.co/m8htzBp)
 
 Favorite Repositories Page 
-![fav_repositories](https://github.com/user-attachments/assets/1b7259e8-3002-4578-beb4-fab974745522)
+![fav_repositories](https://ibb.co/r7LPpnQ)
 
 Repository Details Page
-![repository_details](https://github.com/user-attachments/assets/3927684c-f45c-454f-b6ce-8a74f1fc2bce)
+![repository_details](https://ibb.co/yBy9Nwj)
 
 
 # Architecture
