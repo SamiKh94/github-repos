@@ -105,7 +105,29 @@ The app uses **Hilt**, a DI library built on top of Dagger, to provide dependenc
 5. **Hilt**
    - Provides a simplified DI solution, integrating with Android architecture components like `ViewModel` and `Room`.
 
----
+# Provide a clear user experience when there is no internet connection Suggested Impl: 
+
+Implementing a robust user experience for applications when there is no internet connection. By utilizing a custom `GithubReposConnectivityManager`, to ensure that users are informed about their network status, allowing for better handling of UI states in our application.
+
+- **Network State Observation**: The `GithubReposConnectivityManager` observes the current network state and requires the permission to access network state.
+- **Dependency Injection**: Integrated with Hilt for easy and efficient dependency management.
+- **UI State Management**: The ViewModel maps network states to a `RepositoriesUIState`, including a dedicated "No Internet" state to inform users when connectivity is lost.
+
+### Usage
+
+- Inject `GithubReposConnectivityManager` into the ViewModel.
+- Observe the network state and update the UI accordingly.
+
+### Example
+
+```kotlin
+@HiltViewModel
+class RepositoriesViewModel @Inject constructor(
+    private val connectivityManager: GithubReposConnectivityManager
+) : ViewModel() {
+    // Observe network state and map to UI state
+}
+```
 
 ## References:
 - [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
