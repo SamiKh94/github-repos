@@ -30,6 +30,8 @@ class RepositoriesViewModel @Inject constructor(
     private val githubFavoriteRepositoriesOfflineRepository: GithubFavoriteRepositoriesOfflineRepository
 ) : ViewModel() {
 
+    val itemSelectionStateFlow = MutableStateFlow<RepositoryItem?>(null)
+
     private val _creationPeriodMutableStateFlow = MutableStateFlow(CreationPeriod.A_MONTH)
     private val _searchQueryMutableStateFlow = MutableStateFlow("")
     private val _pagedRepositoriesStateFlow = combine(

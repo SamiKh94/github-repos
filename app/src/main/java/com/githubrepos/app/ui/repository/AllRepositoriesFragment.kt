@@ -1,15 +1,13 @@
 package com.githubrepos.app.ui.repository
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubrepos.app.R
@@ -27,14 +25,20 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class AllRepositoriesFragment : Fragment() {
 
+    private var isTwoPane: Boolean = false
+
     private lateinit var binding: FragmentRepositoriesListBinding
-    private val viewModel by viewModels<RepositoriesViewModel>()
+    private val sharedViewModel by activityViewModels<RepositoriesViewModel>()
 
     private val repositoriesAdapter: PagedRepositoriesAdapter =
         PagedRepositoriesAdapter(onAddToFavReposClicked = {
-            viewModel.markRepositoryAsFavorite(it)
+            sharedViewModel.markRepositoryAsFavorite(it)
             updatePaginationData()
         }, onRepositoryClicked = {
+            if (isTwoPane) {
+                sharedViewModel.itemSelectionStateFlow.value = it
+                return@PagedRepositoriesAdapter
+            }
             startActivity(RepositoryDetailsActivity.newIntent(requireContext(), it))
         })
 
@@ -49,8 +53,10 @@ class AllRepositoriesFragment : Fragment() {
         binding = FragmentRepositoriesListBinding.inflate(inflater)
 
         binding.searchView.addTextChangedListener {
-            viewModel.performSearch(it.toString())
+            sharedViewModel.performSearch(it.toString())
         }
+
+        isTwoPane = resources.getBoolean(R.bool.isTwoPane)
 
         with(binding.list) {
 
@@ -112,10 +118,10 @@ class AllRepositoriesFragment : Fragment() {
                             else -> CreationPeriod.A_DAY
                         }
 
-                        viewModel.updateCreationPeriodSelection(value = creationPeriodSelection)
+                        sharedViewModel.updateCreationPeriodSelection(value = creationPeriodSelection)
 
                     } else {
-                        viewModel.updateCreationPeriodSelection(value = CreationPeriod.A_MONTH)
+                        sharedViewModel.updateCreationPeriodSelection(value = CreationPeriod.A_MONTH)
                     }
                 }
             }
@@ -125,7 +131,7 @@ class AllRepositoriesFragment : Fragment() {
     private fun observeViewModelStates() {
         viewLifecycleOwner.lifecycleScope.launch {
 
-            viewModel.repositoriesResultUIState.collectLatest {
+            sharedViewModel.repositoriesResultUIState.collectLatest {
                 when (it) {
                     is RepositoryUiState.Error -> {
                         binding.isLoading = false

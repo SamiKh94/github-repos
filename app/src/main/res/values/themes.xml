@@ -3,6 +3,7 @@
 
     <style name="Theme.GithubRepos" parent="Theme.MaterialComponents.Light.NoActionBar" />
     <style name="MaterialChips" parent="@style/Widget.MaterialComponents.Chip.Choice">
-        <item name="chipBackgroundColor">@color/purple_200</item>
+        <item name="chipBackgroundColor">@color/blue</item>
+        <item name="android:colorPrimary">#ADD8E6</item>
     </style>
 </resources>

@@ -1,0 +1,4 @@
+<!-- res/values-sw600dp/bools.xml -->
+<resources>
+    <bool name="isTwoPane">true</bool>
+</resources>

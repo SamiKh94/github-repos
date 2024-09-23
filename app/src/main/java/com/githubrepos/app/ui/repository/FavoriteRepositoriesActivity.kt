@@ -25,6 +25,7 @@ class FavoriteRepositoriesActivity : FragmentActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_favorite_repositories)
 
         setActionBar(binding.toolbar)
+        actionBar?.title = getString(R.string.favorite_repositories)
 
         initViews()
     }

@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="start"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="@dimen/title_text_size"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -45,11 +45,12 @@
 
             <TextView
                 android:id="@+id/repo_desc"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="8dp"
                 android:ellipsize="end"
                 android:maxLines="2"
+                android:textSize="@dimen/desc_text_size"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/repo_name"
@@ -65,8 +66,8 @@
                 app:layout_constraintTop_toBottomOf="@+id/repo_desc">
 
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="@dimen/mini_avatar_size"
+                    android:layout_height="@dimen/mini_avatar_size"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_star"
                     tools:ignore="ContentDescription" />
@@ -80,6 +81,7 @@
                     android:gravity="center"
                     android:textAlignment="center"
                     android:textColor="#ED8A19"
+                    android:textSize="@dimen/desc_text_size"
                     app:layout_constraintStart_toEndOf="@+id/star_image"
                     app:layout_constraintTop_toBottomOf="@+id/repo_desc"
                     tools:text="1234567" />
@@ -95,55 +97,62 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/stars_layout" />
 
-            <com.githubrepos.app.utils.views.Avatar
-                android:id="@+id/owner_avatar"
-                android:layout_width="26dp"
-                android:layout_height="26dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                app:imageUrl="@{ownerAvatarUrl}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider"
-                tools:ignore="ContentDescription" />
-
-            <TextView
-                android:id="@+id/owner_prefix"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
-                android:text="@string/owned_by"
+                android:gravity="start"
+                android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/owner_avatar"
-                app:layout_constraintTop_toBottomOf="@+id/divider" />
-
-            <TextView
-                android:id="@+id/owner_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="12dp"
-                android:text="@string/owner_name"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/owner_prefix"
-                app:layout_constraintTop_toBottomOf="@+id/divider"
-                tools:text="\@Sami" />
-
-            <ImageView
-                android:id="@+id/add_to_fav_repos"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginTop="12dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true"
-                android:src="@{isFavorite ? @drawable/ic_bookmarked :@drawable/ic_bookmark}"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/divider"
-                tools:ignore="ContentDescription" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider">
+
+                <com.githubrepos.app.utils.views.Avatar
+                    android:id="@+id/owner_avatar"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:imageUrl="@{ownerAvatarUrl}"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/owner_prefix"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/owned_by" />
+
+                <TextView
+                    android:id="@+id/owner_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="12dp"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="@string/owner_name"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    tools:text="\@Sami" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/add_to_fav_repos"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="12dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@{isFavorite ? @drawable/ic_bookmarked :@drawable/ic_bookmark}"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>
