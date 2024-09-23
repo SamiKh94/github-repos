@@ -52,10 +52,6 @@ class AllRepositoriesFragment : Fragment() {
     ): View {
         binding = FragmentRepositoriesListBinding.inflate(inflater)
 
-        binding.searchView.addTextChangedListener {
-            sharedViewModel.performSearch(it.toString())
-        }
-
         isTwoPane = resources.getBoolean(R.bool.isTwoPane)
 
         with(binding.list) {

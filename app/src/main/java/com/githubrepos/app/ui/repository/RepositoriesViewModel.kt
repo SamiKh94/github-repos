@@ -33,16 +33,9 @@ class RepositoriesViewModel @Inject constructor(
     val itemSelectionStateFlow = MutableStateFlow<RepositoryItem?>(null)
 
     private val _creationPeriodMutableStateFlow = MutableStateFlow(CreationPeriod.A_MONTH)
-    private val _searchQueryMutableStateFlow = MutableStateFlow("")
-    private val _pagedRepositoriesStateFlow = combine(
-        _creationPeriodMutableStateFlow,
-        _searchQueryMutableStateFlow
-    ) { creationPeriod, searchQuery ->
-        creationPeriod to searchQuery
-    }.flatMapLatest {
+    private val _pagedRepositoriesStateFlow = _creationPeriodMutableStateFlow.flatMapLatest {
         getPagedRepositories(
-            it.first,
-            it.second
+            it
         )
     }
         .mutableStateIn(viewModelScope, initialValue = PagingData.empty())
@@ -88,7 +81,6 @@ class RepositoriesViewModel @Inject constructor(
 
     private fun getPagedRepositories(
         creationPeriod: CreationPeriod,
-        query: String
     ): Flow<PagingData<RepositoryItem>> {
         return githubRemoteRepositoriesRepository.getPagedRepositories(creationPeriod = creationPeriod)
             .cachedIn(viewModelScope)
@@ -108,10 +100,6 @@ class RepositoriesViewModel @Inject constructor(
                     _creationPeriodMutableStateFlow.value
             }
         }
-    }
-
-    fun performSearch(query: String) {
-        _searchQueryMutableStateFlow.value = query
     }
 
     private fun refreshData() {
